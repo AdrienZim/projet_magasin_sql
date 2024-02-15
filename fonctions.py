@@ -32,8 +32,8 @@ def connect_to_database(host, port, username, password, database):
 
 # Paramètres de connexion à la base de données
 host = "jp2.dmsv-manche.fr"
-username = "michelra"
-password = "Soky8390"
+username = ""
+password = ""
 database = "projet_magasin"
 port = 3306
 
@@ -62,6 +62,32 @@ def sql_execute(sql_insert):
         connexion.rollback()
         return False
         print(f"Erreur lors de l'insertion des données : {err}")
+    
+    finally:
+        # Fermeture du curseur et de la connexion
+        cursor.close()
+        connexion.close()
+        
+def sql_execute_select(sql_insert):
+    # Création d'un curseur pour exécuter des requêtes SQL
+    cursor = connexion.cursor()
+    
+    # Requête SQL pour insérer des données dans la table
+    # sql_insert = f"INSERT INTO {table} ({colonnes}) VALUES ({values})"
+    
+    try:
+        # Exécution de la requête pour chaque ensemble de données
+        cursor.execute(sql_insert)
+    
+        # Récupération des données
+        result = cursor.fetchall()
+        return result
+    
+    except mysql.connector.Error as err:
+        # En cas d'erreur, annulation des modifications
+        connexion.rollback()
+        return False
+        print(f"Erreur lors de la récupération des données : {err}")
     
     finally:
         # Fermeture du curseur et de la connexion

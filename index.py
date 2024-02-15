@@ -11,49 +11,15 @@ import sys
 import mysql.connector
 
 # Imports des fichiers de Classe & de la fonction d'interrogation de la base de données -> sql_execute
-from fonctions import sql_execute
+from fonctions import connexion, sql_execute
 from classes.class_stock import *
 from interfaces.client_affichage_stock import main_client
 
 # Test de la présence du Package mysql.connector
 print("version mysql :", mysql.connector.__version__)
 
-# Connexion à la base de donnée
-
-def connect_to_database(host, port, username, password, database):
-    try:
-        # Connexion à la base de données MySQL
-        conn = mysql.connector.connect(
-            host = host,
-            user = username,
-            password = password,
-            database = database,
-            port = port
-        )
-        
-        if conn.is_connected():
-            print("Connecté à la base de données MySQL")
-            return conn
-        else:
-            print("Impossible de se connecter à la base de données")
-            return None
-    except mysql.connector.Error as e:
-        print("Erreur de connexion à la base de données:", e)
-        return None
-
-# Paramètres de connexion à la base de données
-host = "jp2.dmsv-manche.fr"
-username = "michelra"
-password = "Soky8390"
-database = "projet_magasin"
-port = 3306
-
-# Connexion à la base de données
-connexion = connect_to_database(host, port, username, password, database)
-
-
 # Fonction de chargement du CSV
-assert sql_execute("SELECT * FROM stock;") == True, "L'importation du stock contient une erreur de chargement."
+assert importer() == True, "L'importation du stock contient une erreur de chargement."
 
 # Fonctions :
 def action(event):
